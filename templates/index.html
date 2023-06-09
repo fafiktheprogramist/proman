@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body onload="">
-    <p>TU NA RAZIE JEST ŚCIERNISKO</p>
-    <p>PIENIĄDZE JEDNAK TO NIE WSZYSTKO, ALE WSZYSTKO BEZ PIENIĘDZY TO CH*J</p>
-    <p>
-        {{data}}
-    </p>
-    <p></p>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+        <title> ProMan  </title>
+    </head>
+    <body>
+        <p>TU NA RAZIE JEST ŚCIERNISKO</p>
+        <p>PIENIĄDZE JEDNAK TO NIE WSZYSTKO, ALE WSZYSTKO BEZ PIENIĘDZY TO CH*J</p>
 
-    <script>
+        
+        <form id="create_new_board_form" method="POST" action="/board">
+            <input name="name" type="text" id="board_name" placeholder="name your board" required autocomplete="off">
+            <button type="submit" id="create_button"> Create New Board! </button>
+        </form>
 
-    </script>
-</body>
+        <p> {% for board in boards %}
+            {{ board.title }}
+            {% endfor %}
+        </p>
+        <p></p>
+
+        <p id="ref_boards"> </p>
+        <p id="erros"> </p>
+        <script>
+            document.getElementById('create_new_board_form').addEventListener('submit'), function(event) {
+                event.preventDefault();
+            };
+        </script>
+    </body>
 </html>

@@ -4,18 +4,121 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <title> ProMan  </title>
 </head>
-<body onload="">
+<body>
     <p>TU NA RAZIE JEST ŚCIERNISKO</p>
     <p>PIENIĄDZE JEDNAK TO NIE WSZYSTKO, ALE WSZYSTKO BEZ PIENIĘDZY TO CH*J</p>
-    <p>
-        {{data}}
-    </p>
-    <p></p>
+        
+    <form id="create-new-board-form" method="POST" action="/board">
+         <input name="name" type="text" id="board_name" placeholder="name your board" required autocomplete="off">
+        <button type="submit" id="create-new-board-button"> Create New Board! </button>
+    </form>
+
+    {% for board in boards %}
+        <span style="margin: auto 5px;"> {{ board.title }} </span>
+    {% endfor %}
+
+    <br><br>
+    <ul>
+        <li>kolor przycisku do dodawania tasków</li>
+        <li>design informacji po najechaniu</li>
+        <li>możliwość przenoszenia tasków</li>
+    </ul>
+    {% for board in boards %}
+        <div class="board" id="{{ board.id }}">
+            <div class="top">
+                <h2 class="board-title">{{ board.title }}</h2>
+            </div>
+            <div class="bottom">
+                {% for status in ["new", "in-progress", "testing", "done"] %}
+                    <div class="section color-{{ status }}">
+                        <div class="section-title"> 
+                            <h1 class="title">{{ status | upper }}</h1>
+                            {% if status == "new" %}
+                                <button class="add-new-task-button" onclick="addTask('{{ board.id }}')">
+                                    <div class="svg-wrapper-1">
+                                        <div class="svg-wrapper">
+                                            <svg enable-background="new 0 0 50 50" width="24px" height="24px" id="Layer_1" version="1.1" viewBox="0 0 50 50">
+                                                <rect fill="none" height="50" width="50"/>
+                                                <line fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4" x1="9" x2="41" y1="25" y2="25"/>
+                                                <line fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4" x1="25" x2="25" y1="9" y2="41"/>
+                                            </svg>                                
+                                        </div>
+                                    </div>
+                                    <span> ADD </span>
+                                </button>
+                            {% endif %}
+                            
+                        </div>
+                        <div class="cards">
+                            <div class="item" onclick="editTitle(this)">
+                                <div class="card-title"> Card1 Test </div>
+                                <div class="hiden-card-info">
+                                    <h4> Info </h4>
+                                    <p> Added: 07.06.2023 </p>
+                                    <p> Author: Jack </p>
+                                </div>
+                            </div>
+                            <div class="item" onclick="editTitle(this)">
+                                <div class="card-title"> Card2 </div>
+                                <div class="hiden-card-info"> clean your teeth </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
 
     <script>
+        function addTask(boardID) {
+            let board = document.getElementById(boardID);
+            let cardsSection = board.querySelector('.section.color-new .cards');
+            
+            let newItem = document.createElement('div');
+            newItem.classList.add('item');
+            newItem.setAttribute('onclick', 'editTitle(this)');
+            newItem.innerHTML = `
+                <div class="card-title"> Deafult Task Name </div>
+                <div class="hiden-card-info">
+                    <h4> Informations </h4>
+                    <p> Added: Today </p>
+                    <p> Author: Unknown </p>
+                </div>
+            `;
+            cardsSection.appendChild(newItem);
+            editTitle(newItem);
+        };
+        function editTitle(element) {
+            let cardTitle = element.querySelector('.card-title');
+            let input = document.createElement('input');
+            input.setAttribute('placeholder', 'Enter task name...')
+            input.type = 'text';
+            input.value = cardTitle.textContent;
 
+            var saveChanges = function() {
+                if (input.value.trim() !== '') {
+                    cardTitle.textContent = input.value;
+                }
+                element.replaceChild(cardTitle, input);
+            };
+
+            input.addEventListener('blur', saveChanges);
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    saveChanges();
+                }
+            });
+
+            element.replaceChild(input, cardTitle);
+            input.focus();
+        }
+        // Move task to other section etc. New --> Testing
+        function moveTask() { 
+            let itemToMove
+        }
     </script>
 </body>
 </html>

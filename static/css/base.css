@@ -1,140 +1,135 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=devanagari,latin-ext");
-body {
-  background-color: #e2efff;
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Geologica&display=swap');
+* {
+	font-family: Geologica;
+	box-sizing: border-box;
+}
+.board {
+	margin: 25px auto;
+	border-radius: 0.5rem;
+	background-color: #F9F5F6;
+	width: 75vw;
+	padding: 10px;
+}
+.top {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #ffffff;
+	padding: 15px 0;
+	border-radius: 5px 0 0 0;
+}
+.board-title {
+	color: black;
+	margin-left: 10px;
+}
+.bottom {
+	min-height: 30vh;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 10px;
+	align-items: start;
+	padding-top: 10px;
+}
+.section-title {
+	display: flex;
+	align-items: center;
+	height: 45px;
+	background-color: #ffffff;
+	padding: 5px 0;
+}
+.title {
+	color: black;
+	width: fit-content;
+	font-size: 20px;
+	margin-left: 25px;
+}
+.section {
+	display: flex;
+	width: 100%;
+	height: fit-content;
+	flex-direction: column;
+	height: fit-content;
+	background-color: chocolate;
+	margin-top: 10px;
 }
 
-/* Style the navbar */
-.topnav {
-  overflow: hidden;
-  background-color: #B0DAFF;
+.color-new { background-color: #fee4f6; }
+.color-in-progress { background-color: #e1eefd; }
+.color-testing { background-color: #fbf799; }
+.color-done { background-color: #e5f9e2; border-radius: 0 0 0 5px; }
+
+.cards {
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	margin: 10px auto;
 }
 
-/* Navbar links */
-.topnav a {
-  float: left;
-  display: block;
-  color: rgb(4, 4, 4);
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 20px;
-  font-family: "Poppins", sans-serif;
+.card-title {
+	width: fit-content;
+	color: black;
+	padding: 10px;
+	margin-bottom: 5px;
+	background-color: #ffffff;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
 }
-
-/* Navbar links on mouse-over */
-.topnav a:hover {
-  border-radius: 5px;
-  background-color: #ddd;
-  color: black;
-}
-
-/* Active/current link */
-.topnav a.active {
-  border-radius: 5px;
-  background-color: #6D5D6E;
-  color: white;
-}
-
 input {
-  width: 350px;
-  padding: 15px;
-  border: solid 1px #2196F3;
-  border-radius: 5px;
+	color: black;
+	padding: 10px;
+	margin-bottom: 5px;
+	background-color: #ffffff;
+	border-radius: 5px;
+	font-size: 1em;
 }
-button {
-  padding: 15px;
-  border: solid 1px #2196F3;
-  border-radius: 5px;
-  cursor: pointer;
+input:focus { 
+	width: 100%;
+	outline: none;
+	border: none;
+	border-bottom: 4px solid black;
 }
-
-.search-container { 
-  margin: 20px 54px 20px auto;
-  float: right;
+.hiden-card-info {
+	display: none;
 }
-
-/* Add responsiveness - On small screens, display the navbar vertically instead of horizontally */
-@media screen and (max-width: 600px) {
-  .topnav .search-container {
-    float: none;
-  }
-  .topnav a, .topnav input[type=text], .topnav .search-container button {
-    float: none;
-    display: block;
-    text-align: left;
-    width: 100%;
-    margin: 0;
-    padding: 14px;
-  }
-  .topnav input[type=text] {
-    border: 1px solid #ccc;
-  }
+.card-title:hover + .hiden-card-info {
+	transition: 0.3s;
+	display: block;
+	position: absolute;
+	padding: 10px;
+	background-color: #20262E;
+	color: #ffffff;
+	width: fit-content;
+	border-radius: 5px;
 }
-
-#main_title{
-text-align: center;  
-font-style: oblique;
-font-family: 'Courier New', Courier, monospace;
-font-size: 50px;
-color: #6D5D6E
+.hiden-card-info h4,
+.hiden-card-info p {
+	margin: 0;
+}
+.card-title:hover {
+	transition: 0.3s;
+	background-color: #F9F5F6;
 }
 
-a { 
-    color: #474E68;
-    margin: 15px 0 15px 15px;
-    text-decoration: none;
-}
-a:visited { 
-    color: black;
-    text-decoration: none;
-}
-.questions {
-  margin-top: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.question {
-  background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(1.5rem);
-  margin: 10px;
-  width: 30%;
-  border-radius: 10px;
-}
-.question-title {
-  font-weight: 750;
-  font-family: "Poppins", sans-serif;
-  font-size: 1.7rem;
-  margin: 15px 0 15px 15px;
-}
-.question-description {
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-  margin-left: 15px;
-  width: 75%;
-}
-.question-hr {
-  width: 40%;
-  margin-left: 15px;
-  border: 0;
-  height: 1px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-}
-.question-submission {
-  font-family: "Poppins", sans-serif;
-  color: #474E68;
-  margin-left: 15px;
-  padding-bottom: 15px;
-}
-.question-submission-span {
-  font-weight: bold;
-}
-.question-colored-box {
-  height: 100%;
-  width: 25px;
-  float: right;
-  margin-top: 0;
-  border-radius: 0 10px 10px 0;
+
+.add-new-task-button {
+	margin-left: auto;
+	font-family: inherit;
+	font-size: 15px;
+	background: royalblue;
+	color: white;
+	padding: 0.7em 1em;
+	padding-left: 0.9em;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	border: none;
+	border-radius: 20px 0 0 20px;
+	overflow: hidden;
+	transition: all 0.2s;
+	position: relative;
+	}
+	
+.add-new-task-button svg {
+	display: block;
 }

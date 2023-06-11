@@ -41,6 +41,23 @@ def get_connection_data(db_name=None):
         'password': os.environ.get('PSQL_PASSWORD')
     }
 
+def execute_update(statement, variables=None):
+    """
+    Execute an UPDATE statement optionally parameterized and return the updated row.
+
+    Example:
+    > execute_update('UPDATE shows SET title = %(new_title)s WHERE id = %(show_id)s', 
+                    variables={'new_title': 'New Title', 'show_id': 1})
+    statement: UPDATE statement
+    variables: optional parameter dict
+    """
+    updated_row = None
+    with establish_connection() as conn:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
+            cursor.execute(statement + ' RETURNING *', variables)
+            if cursor.rowcount > 0:
+                updated_row = cursor.fetchone()
+    return updated_row
 
 def execute_insert(statement, variables=None):
     with establish_connection() as conn:

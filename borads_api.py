@@ -14,7 +14,7 @@ def add_board():
 
     if not data or 'name' not in data:
         return make_response(jsonify({'error' : 'Bad Request (board name not specified)'}))
-    execute_insert('INSERT INTO boards (title) VALUES (%s)', (data['name'],))
-    return jsonify({'message' : f'Submitted board with name {data["name"]}'})
+    result = execute_insert('INSERT INTO boards (title) VALUES (%s)', (data['name'],))
+    return jsonify(result)
 
 

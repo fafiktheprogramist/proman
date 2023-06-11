@@ -45,7 +45,9 @@ def get_connection_data(db_name=None):
 def execute_insert(statement, variables=None):
     with establish_connection() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
-            cursor.execute(statement, variables)
+            cursor.execute(statement + ' RETURNING *', variables)
+            inserted_row = cursor.fetchone()  # Retrieve the newly inserted row
+            return inserted_row
             
 
 def execute_select(statement, variables=None, fetchall=True):

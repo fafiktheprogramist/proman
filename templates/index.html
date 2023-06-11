@@ -11,7 +11,7 @@
     <p>TU NA RAZIE JEST ŚCIERNISKO</p>
     <p>PIENIĄDZE JEDNAK TO NIE WSZYSTKO, ALE WSZYSTKO BEZ PIENIĘDZY TO CH*J</p>
         
-    <form id="create-new-board-form" method="POST" action="/board">
+    <form id="create-new-board-form" method="POST" action="/api/board">
          <input name="name" type="text" id="board_name" placeholder="name your board" required autocomplete="off">
         <button type="submit" id="create-new-board-button"> Create New Board! </button>
     </form>
@@ -26,6 +26,7 @@
         <li>design informacji po najechaniu</li>
         <li>możliwość przenoszenia tasków</li>
     </ul>
+    <div id="boards">
     {% for board in boards %}
         <div class="board" id="{{ board.id }}">
             <div class="top">
@@ -71,8 +72,88 @@
             </div>
         </div>
     {% endfor %}
+</div>
 
     <script>
+
+        
+
+document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('create-new-board-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let boards = document.getElementById("boards")
+
+                var form = e.target;
+                var url = form.action;
+
+                var data = {
+                    name: form.name.value,
+                };
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        var board = JSON.parse(xhr.responseText);
+                        boards.innerHTML += `
+        <div class="board" id="${board.id}">
+            <div class="top">
+                <h2 class="board-title">${board.title}</h2>
+            </div>
+            <div class="bottom">
+                {% for status in ["new", "in-progress", "testing", "done"] %}
+                    <div class="section color-{{ status }}">
+                        <div class="section-title"> 
+                            <h1 class="title">{{ status | upper }}</h1>
+                            {% if status == "new" %}
+                                <button class="add-new-task-button" onclick="addTask('${board.id}')">
+                                    <div class="svg-wrapper-1">
+                                        <div class="svg-wrapper">
+                                            <svg enable-background="new 0 0 50 50" width="24px" height="24px" id="Layer_1" version="1.1" viewBox="0 0 50 50">
+                                                <rect fill="none" height="50" width="50"/>
+                                                <line fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4" x1="9" x2="41" y1="25" y2="25"/>
+                                                <line fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4" x1="25" x2="25" y1="9" y2="41"/>
+                                            </svg>                                
+                                        </div>
+                                    </div>
+                                    <span> ADD </span>
+                                </button>
+                            {% endif %}
+                            
+                        </div>
+                        <div class="cards">
+                            <div class="item" onclick="editTitle(this)">
+                                <div class="card-title"> Card1 Test </div>
+                                <div class="hiden-card-info">
+                                    <h4> Info </h4>
+                                    <p> Added: 07.06.2023 </p>
+                                    <p> Author: Jack </p>
+                                </div>
+                            </div>
+                            <div class="item" onclick="editTitle(this)">
+                                <div class="card-title"> Card2 </div>
+                                <div class="hiden-card-info"> clean your teeth </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>`
+                        // Handle the response from the server
+                    } else if (xhr.readyState === XMLHttpRequest.DONE) {
+                        console.log('An error occurred');
+                        // Handle any errors that occurred
+                    }
+                };
+
+                var jsonData = JSON.stringify(data);
+                xhr.send(jsonData);
+            });
+        });
+
         function addTask(boardID) {
             let board = document.getElementById(boardID);
             let cardsSection = board.querySelector('.section.color-new .cards');

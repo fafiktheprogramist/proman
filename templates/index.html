@@ -8,8 +8,6 @@
     <title> ProMan  </title>
 </head>
 <body>
-    <p>TU NA RAZIE JEST ŚCIERNISKO</p>
-    <p>PIENIĄDZE JEDNAK TO NIE WSZYSTKO, ALE WSZYSTKO BEZ PIENIĘDZY TO CH*J</p>
         
     <form id="create-new-board-form" method="POST" action="/api/board">
          <input name="name" type="text" id="board_name" placeholder="name your board" required autocomplete="off">
@@ -21,16 +19,18 @@
     {% endfor %}
 
     <br><br>
-    <ul>
-        <li>kolor przycisku do dodawania tasków</li>
-        <li>design informacji po najechaniu</li>
-        <li>możliwość przenoszenia tasków</li>
-    </ul>
+
     <div id="boards">
     {% for board in boards %}
         <div class="board" id="{{ board.id }}">
             <div class="top">
                 <h2 class="board-title">{{ board.title }}</h2>
+                <div class="buttons">
+                    <button class="board-management-button border-delete size-board margin-r-15" onclick="removeBoard('{{ board.id }}')">
+                        <img src="{{ url_for('static', filename='images/delete.svg') }}" alt="remove_button">
+                        <span class="tooltip background-delete"> DELETE </span>
+                    </button>
+                </div>
             </div>
             <div class="bottom">
                 {% for status in ["new", "in-progress", "testing", "done"] %}
@@ -76,7 +76,23 @@
 
     <script>
 
-        
+        function removeBoard(boardId) {
+            let boardToDelete = document.getElementById(boardId);
+            boardToDelete.remove();
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.log(xhr.status);
+                    };
+                };
+            };
+            xhr.open('POST', '/remove-board');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+            xhr.send("title=" + boardId);
+        };
 
 document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('create-new-board-form').addEventListener('submit', function(e) {
@@ -143,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>`
                         // Handle the response from the server
-                    } else if (xhr.readyState === XMLHttpRequest.DONE) {
+                    } else if (xhr.readyState !== XMLHttpRequest.DONE) {
                         console.log('An error occurred');
                         // Handle any errors that occurred
                     }
@@ -154,6 +170,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+
+
+
+        
         function addTask(boardID) {
             let board = document.getElementById(boardID);
             let cardsSection = board.querySelector('.section.color-new .cards');
@@ -172,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cardsSection.appendChild(newItem);
             editTitle(newItem);
         };
+
         function editTitle(element) {
             let cardTitle = element.querySelector('.card-title');
             let input = document.createElement('input');

@@ -8,7 +8,6 @@ import data_handler
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
 
 app.register_blueprint(boards_bp, url_prefix='/api')
 app.register_blueprint(cards_bp, url_prefix='/api')
@@ -19,6 +18,15 @@ def index():
     boards = data_handler.get_all_boards()
     return render_template("index.html", boards=boards)
 
+@app.route('/remove-board', methods=['POST'])
+def remove_board_request_page():
+    try:
+        board_id = request.form.get("title")
+        data_handler.remove_board(board_id)
+        return f"Usunięto '{board_id}' z listy tablic :)"
+    except Exception as error:
+        print(f"Wystąpił błąd: {str(error)}")
+        return f"Wystąpił błąd podczas usuwania tablicy: {str(error)}"
 
 if __name__ == "__main__":
     app()

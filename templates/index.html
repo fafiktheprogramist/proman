@@ -38,24 +38,34 @@
                         <div class="section-title"> 
                             <h1 class="title">{{ status | upper }}</h1>
                             {% if status == "new" %}
-                                <button class="add-new-task-button" onclick="addTask('{{ board.id }}')">
-                                    <div class="svg-wrapper-1">
-                                        <div class="svg-wrapper">
-                                            <svg enable-background="new 0 0 50 50" width="24px" height="24px" id="Layer_1" version="1.1" viewBox="0 0 50 50">
-                                                <rect fill="none" height="50" width="50"/>
-                                                <line fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4" x1="9" x2="41" y1="25" y2="25"/>
-                                                <line fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4" x1="25" x2="25" y1="9" y2="41"/>
-                                            </svg>                                
-                                        </div>
-                                    </div>
-                                    <span> ADD </span>
+                            <div class="buttons">
+                                <button class="board-management-button border-new size-card margin-r-15" onclick="addTask('{{ board.id }}')">
+                                    <img src="{{ url_for('static', filename='images/add.svg') }}" alt="add_button">
+                                    <span class="tooltip background-new"> ADD </span>
                                 </button>
+                            </div>
                             {% endif %}
                             
                         </div>
                         <div class="cards">
                             <div class="item" onclick="editTitle(this)">
-                                <div class="card-title"> Card1 Test </div>
+                                <div class="item-title">
+                                    <div class="card-title"> Card1 Test </div>
+                                    <div class="buttons">
+                                        <button class="board-management-button border-info size-card margin-r-10" onclick="toggleInfo()">
+                                            <img src="{{ url_for('static', filename='images/info.svg') }}" alt="info-button">
+                                            <span class="tooltip background-info"> INFO </span>
+                                        </button>
+                                        <button class="board-management-button border-rename size-card margin-r-10" onclick="renameTask()">
+                                            <img src="{{ url_for('static', filename='images/edit.svg') }}" alt="edit-me">
+                                            <span class="tooltip background-rename"> EDIT </span>
+                                        </button>
+                                        <button class="board-management-button border-delete size-card " onclick="deleteTask('{{ board.id }}')">
+                                            <img src="{{ url_for('static', filename='images/delete.svg') }}" alt="delete">
+                                            <span class="tooltip background-delete"> DELETE </span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="hiden-card-info">
                                     <h4> Info </h4>
                                     <p> Added: 07.06.2023 </p>
@@ -118,6 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="board" id="${board.id}">
             <div class="top">
                 <h2 class="board-title">${board.title}</h2>
+                <div class="buttons">
+                    <button class="board-management-button border-delete size-board margin-r-15" onclick="removeBoard('${ board.id }')">
+                        <img src="{{ url_for('static', filename='images/delete.svg') }}" alt="remove_button">
+                        <span class="tooltip background-delete"> DELETE </span>
+                    </button>
+                </div>
             </div>
             <div class="bottom">
                 {% for status in ["new", "in-progress", "testing", "done"] %}
@@ -196,7 +212,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function editTitle(element) {
             let cardTitle = element.querySelector('.card-title');
             let input = document.createElement('input');
-            input.setAttribute('placeholder', 'Enter task name...')
+            input.classList.add("edit-title-field");
+            input.setAttribute('placeholder', 'Enter task name...');
             input.type = 'text';
             input.value = cardTitle.textContent;
 

@@ -33,6 +33,7 @@
 .section-title {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	height: 45px;
 	background-color: #ffffff;
 	padding: 5px 0;
@@ -66,7 +67,7 @@
 }
 
 .card-title {
-	width: fit-content;
+	width: 100%;
 	color: black;
 	padding: 10px;
 	margin-bottom: 5px;
@@ -75,7 +76,7 @@
 	display: flex;
 	flex-direction: column;
 }
-input {
+.edit-title-field {
 	color: black;
 	padding: 10px;
 	margin-bottom: 5px;
@@ -83,7 +84,7 @@ input {
 	border-radius: 5px;
 	font-size: 1em;
 }
-input:focus { 
+.edit-title-field:focus { 
 	width: 100%;
 	outline: none;
 	border: none;
@@ -137,6 +138,9 @@ input:focus {
 /*delete button */
 .buttons{
 	display: flex;
+	justify-content: space-around;
+	margin-left: 10px;
+	
 }
 .board-management-button {
 	cursor: pointer;
@@ -161,6 +165,17 @@ input:focus {
 	width: 40px;
 	height: 40px;
 }
+.size-card {
+	width: 35px;
+	height: 35px;
+}
+.size-card > img {
+	width: 25px;
+	height: 25px;
+}
+.border-new {
+	border-bottom: 3px solid #e5f9e2;
+}
 .border-delete {
 	border-bottom: 3px solid #DD3445;
 }
@@ -178,10 +193,11 @@ input:focus {
 	align-items: center;
 	justify-content: center;
 	transition-duration: .2s;
+	line-break: strict;
 	pointer-events: none;
 	letter-spacing: 0.5px;
 }
-.tooltip::before {
+/* .tooltip::before {
 	position: absolute;
 	content: "";
 	width: 10px;
@@ -191,12 +207,38 @@ input:focus {
 	transform: rotate(45deg);
 	bottom: -15%;
 	transition-duration: .3s;
-}
-.board-managment-button:hover .tooltip {
+} */
+.board-management-button:hover .tooltip {
 	top: -40px;
 	opacity: 1;
 	transition-duration: .3s;
 }
 .background-delete{
 	background-color: #DD3445;
+}
+.background-new{
+	background-color: #08c547;
+}
+.border-new {
+	border-bottom: 3px solid #08c547;
+}
+.background-info{
+	background-color: #0e08b1;
+}
+.border-info {
+	border-bottom: 3px solid #0e08b1;
+}
+.item-title{
+	display: flex;
+	justify-content:space-between;
+	align-items: center;
+}
+.background-rename {
+	background-color: #ca8000;
+}
+.border-rename {
+	border-bottom: 3px solid #ca8000;
+}
+.margin-r-10{
+	margin-right: 10px;
 }
